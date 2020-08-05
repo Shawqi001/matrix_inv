@@ -1,0 +1,119 @@
+
+   
+  <?php
+  $page_title = 'All shelfss';
+  require_once('../includes/load.php');
+  // Checkin What level user has permission to view this page
+  page_require_level(1);
+  
+  $shelfs = find_all('shelfs')
+?>
+      	
+	<?php
+ if(isset($_POST['add_shelf'])){
+   $req_field = array('selfs-name');
+   validate_fields($req_field);
+   $shelf_name = remove_junk($db->escape($_POST['shelf-name']));
+   if(empty($errors)){
+      $sql  = "INSERT INTO shelf (name)";
+      $sql .= " VALUES ('{$shelf_name}')";
+      if($db->query($sql)){
+        $session->msg("s", "Successfully Added Categorie");
+        redirect('shelves_details.php',false);
+      } else {
+        $session->msg("d", "Sorry Failed to insert.");
+        redirect('shelves_details.php',false);
+      }
+   } else {
+     $session->msg("d", $errors);
+     redirect('shelves_details.php',false);
+   }
+ }
+?>	
+<?php include_once('../layouts/header.php'); ?>
+		<div class="row">
+     <div class="col-md-12">
+       <?php echo display_msg($msg); ?>
+     </div>
+  </div>
+   <div class="row">
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <strong>
+            <span class="glyphicon glyphicon-th"></span>
+            <span>Add New Categorie</span>
+         </strong>
+        </div>
+		 <div class="panel-body">
+      
+<div class="container"  ng-app="myApp" ng-controller="MainController">
+     <div class="row">
+      
+            <div class="col-md-12">
+  
+                <div class="table-responsive">
+                  <form  id="empform"  ng-submit="submitEmployee()">
+                    <table  class="table table-bordered"  >
+
+
+                        <thead> 
+						
+                        <th>SNO</th>
+                        <th>shelf Name</th>
+                        <th>block number</th>
+                        <th>inventory</th>
+                        <th>Last Name</th>
+                        <th>Desginatin</th>
+                        <th>Project Name</th>
+                        <th>Actions</th>
+						
+                        </thead>
+
+                        <tbody>
+                 
+              <tr ng-repeat="emp in empoyees">
+                <td>{{$index+1}}</td>
+                <td>
+                   <input  name="empId{{$index}}" ng-model="emp.empId" 
+                   ng-disabled="!enabledEdit[{{$index}}]"/>
+                  
+                </td>
+                <td>
+                   <input name="email{{$index}}" ng-model="emp.email"  ng-disabled="!enabledEdit[{{$index}}]" />
+                </td>
+                <td>
+                    <input name="firstName{{$index}}" ng-model="emp.firstName"  ng-disabled="!enabledEdit[{{$index}}]"/>
+                 </td>
+                <td>
+                   <input name="lastName{{$index}}" ng-model="emp.lastName"  ng-disabled="!enabledEdit[{{$index}}]">
+                </td >
+                <td>
+                  <input name="designation{{$index}}" ng-model="emp.designation"  ng-disabled="!enabledEdit[{{$index}}]"/>
+                </td>
+                 <td>`` 
+                  <input name="project{{$index}}" ng-model="emp.project"  ng-disabled="!enabledEdit[{{$index}}]"/>
+                </td>
+                <td >
+                  <div class="buttons">
+                    <button class="btn btn-primary" ng-click="editEmployee($index)">Edit</button>
+                    <button class="btn btn-danger" ng-click="deleteEmployee($index)">Delete</button>
+                  </div>  
+                </td>
+              </tr>
+              
+                        </tbody>
+
+                    </table>
+					<input type="submit" class="btn btn-primary" value="Submit"  name="add_shelf" />
+					  <button type="button" class="btn btn-info " ng-click="addEmployee()"  >Add Employee</button>
+                   </form>
+                    <div class="clearfix"></div>
+                 </div>
+
+            </div>
+  
+  </div>
+ </div>
+
+    <?php include_once('../layouts/footer.php'); ?>
